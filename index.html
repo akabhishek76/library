@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibraNexus Pro | Modern Library Management System</title>
+    <meta name="description" content="Advanced library management system with AI chatbot, digital catalog, and smart notifications">
+    <meta name="keywords" content="library, books, management, chatbot, digital catalog">
+    <meta property="og:title" content="LibraNexus Pro">
+    <meta property="og:description" content="Modern Library Management System">
+    <meta property="og:image" content="https://yourdomain.com/images/og-image.jpg">
+    <meta property="og:url" content="https://yourdomain.com">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --text: #333333;
+            --text-light: #666666;
+            --bg: #f9fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Layout Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes flowerOpen {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-15deg);
+            }
+            70% {
+                opacity: 0.7;
+                transform: scale(1.05) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+        
+        /* Background Elements */
+        .bg-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(67, 97, 238, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -2;
+            opacity: 0.3;
+        }
+        
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            z-index: -1;
+            animation: float 18s infinite ease-in-out;
+        }
+        
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .circle-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--warning);
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+            animation: pulse 2.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 6rem 2rem 8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 650px;
+            animation: slideUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--warning));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--text-light);
+            max-width: 90%;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .hero-image {
+            width: 600px;
+            animation: float 8s infinite ease-in-out;
+            transition: all 0.4s;
+        }
+        
+        .hero-image:hover {
+            animation: float 4s infinite ease-in-out;
+        }
+        
+        /* Collections Section */
+        .collections {
+            padding: 6rem 2rem;
+            background: white;
+            position: relative;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 1s both;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .collection-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: flowerOpen 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        .collection-card:nth-child(1) { animation-delay: 0.1s; }
+        .collection-card:nth-child(2) { animation-delay: 0.2s; }
+        .collection-card:nth-child(3) { animation-delay: 0.3s; }
+        .collection-card:nth-child(4) { animation-delay: 0.4s; }
+        .collection-card:nth-child(5) { animation-delay: 0.5s; }
+        .collection-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .collection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .collection-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .collection-card:hover .collection-image {
+            transform: scale(1.05);
+        }
+        
+        .collection-info {
+            padding: 1.5rem;
+        }
+        
+        .collection-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .collection-count {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .collection-description {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .feature-card.animate {
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        .feature-card:nth-child(1).animate { animation-delay: 0.1s; }
+        .feature-card:nth-child(2).animate { animation-delay: 0.2s; }
+        .feature-card:nth-child(3).animate { animation-delay: 0.3s; }
+        .feature-card:nth-child(4).animate { animation-delay: 0.4s; }
+        .feature-card:nth-child(5).animate { animation-delay: 0.5s; }
+        .feature-card:nth-child(6).animate { animation-delay: 0.6s; }
+        
+        .feature-card:hover {
+            transform: translateY(-10px) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(67, 97, 238, 0.2));
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            transition: all 0.4s;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: rotate(15deg) scale(1.1);
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(67, 97, 238, 0.3));
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--dark);
+        }
+        
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+            text-align: center;
+        }
+        
+        /* Signup Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(30px);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+            background: none;
+            border: none;
+        }
+        
+        .close-modal:hover {
+            color: var(--warning);
+            transform: rotate(90deg);
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-header h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .modal-header p {
+            color: var(--text-light);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            background: white;
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            background: #ccc;
+            transition: all 0.3s;
+        }
+        
+        .form-footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .form-footer p {
+            color: var(--text-light);
+            margin-top: 1rem;
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Success Animation */
+        .success-animation {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-animation i {
+            font-size: 5rem;
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            animation: bounceIn 1s both;
+        }
+        
+        .success-animation h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .success-animation p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        
+        /* Chatbot */
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .chatbot-toggle {
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chatbot-toggle::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+        
+        .chatbot-toggle:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .chatbot-window {
+            width: 380px;
+            height: 550px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            overflow: hidden;
+            display: none;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .chatbot-window.active {
+            display: flex;
+            flex-direction: column;
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .chatbot-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chatbot-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .chatbot-header i {
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .chatbot-header i:hover {
+            transform: rotate(90deg);
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: #f9f9f9;
+            scroll-behavior: smooth;
+        }
+        
+        .message {
+            margin-bottom: 1.2rem;
+            max-width: 85%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 18px;
+            animation: fadeIn 0.4s ease-out;
+            position: relative;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        
+        .bot-message {
+            background: white;
+            border-top-left-radius: 5px;
+            align-self: flex-start;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .user-message {
+            background: var(--primary);
+            color: white;
+            border-top-right-radius: 5px;
+            margin-left: auto;
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 1.2rem;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .chatbot-input input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .chatbot-input button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            margin-left: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chatbot-input button:hover {
+            background: var(--secondary);
+            transform: rotate(15deg);
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        
+        .quick-action {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-action:hover {
+            background: rgba(67, 97, 238, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 5rem 2rem 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 4rem 1rem 6rem;
+            }
+            
+            .hero-content {
+                margin-bottom: 3rem;
+                max-width: 100%;
+            }
+            
+            .hero p {
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .hero-image {
+                width: 100%;
+                max-width: 500px;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .chatbot-window {
+                width: 90vw;
+                right: 5vw;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .collection-card {
+                min-width: 100%;
+            }
+            
+            .chatbot-toggle {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-pattern"></div>
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+    
+    <!-- Header -->
+    <header id="mainHeader">
+        <a href="#" class="logo">
+            <i class="fas fa-book-open"></i>
+            <span>LibraNexus</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#collections">Collections</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#">Books</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <button class="btn btn-outline" id="loginBtn">Login</button>
+            <button class="btn" id="signupBtn">Sign Up</button>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInDown">Discover Your Next Favorite Book</h1>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">LibraNexus combines advanced library management with AI assistance to provide a seamless experience for both librarians and patrons. Find, reserve, and manage books with our intelligent system.</p>
+            <div class="animate__animated animate__fadeIn animate__delay-1s">
+                <a href="#collections" class="btn">Explore Collections</a>
+                <a href="#" class="btn" style="background: var(--warning); margin-left: 1rem;" id="heroSignup">Join Now</a>
+            </div>
+        </div>
+        <img src="https://illustrations.popsy.co/amber/digital-nomad.svg" alt="Library illustration" class="hero-image animate__animated animate__fadeInRight">
+    </section>
+    
+    <!-- Collections Section -->
+    <section class="collections" id="collections">
+        <div class="section-header">
+            <h2 class="section-title">20+ Collections for You</h2>
+            <p class="section-subtitle">Explore our carefully curated collections across various genres and subjects</p>
+        </div>
+        <div class="collections-grid">
+            <div class="collection-card">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Fiction Collection" class="collection-image">
+                <div class="collection-info">
+                    <h3 class="collection-title">Modern Fiction</h3>
+                    <p class="collection-count">350+ Titles</p>
+                    <p class="collection-description">Explore contemporary novels from award-winning authors around the world.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Science Collection" class="collection-image">
+                <div class="collection-info">
+                    <h3 class="collection-title">Science & Technology</h3>
+                    <p class="collection-count">420+ Titles</p>
+                    <p class="collection-description">Cutting-edge research and discoveries in science and technology fields.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="History Collection" class="collection-image">
+                <div class="collection-info">
+                    <h3 class="collection-title">World History</h3>
+                    <p class="collection-count">280+ Titles</p>
+                    <p class="collection-description">Journey through time with comprehensive historical accounts.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="https://images.unsplash.com/photo-1535905557558-afc4877a26fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Business Collection" class="collection-image">
+                <div class="collection-info">
+                    <h3 class="collection-title">Business & Finance</h3>
+                    <p class="collection-count">320+ Titles</p>
+                    <p class="collection-description">Master the world of business with insights from industry leaders.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Writing Collection" class="collection-image">
+                <div class="collection-info">
+                    <h3 class="collection-title">Creative Writing</h3>
+                    <p class="collection-count">190+ Titles</p>
+                    <p class="collection-description">Unleash your creativity with guides from accomplished writers.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                </div>
+            </div>
+            <div class="collection-card">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Literature Collection" class="collection-image">
+                <div class="collection-info">
+                    <h3 class="collection-title">Classic Literature</h3>
+                    <p class="collection-count">500+ Titles</p>
+                    <p class="collection-description">Timeless masterpieces that have shaped literary history.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose LibraNexus</h2>
+            <p class="section-subtitle">Our platform offers cutting-edge features to enhance your library experience</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI-Powered Search</h3>
+                <p>Our intelligent search understands natural language queries to help you find exactly what you're looking for.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Digital Catalog</h3>
+                <p>Browse our extensive collection of books, e-books, and multimedia resources from anywhere.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3>Smart Notifications</h3>
+                <p>Get timely reminders for due dates, available reservations, and library events.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Analytics Dashboard</h3>
+                <p>Librarians get powerful insights into library usage patterns and resource allocation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile Friendly</h3>
+                <p>Access all features from your smartphone or tablet with our responsive design.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Our AI assistant is always available to answer your questions and help with library services.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeSignupModal">&times;</button>
+            <div class="modal-header">
+                <h2>Create Your Account</h2>
+                <p>Join our library community in just a few steps</p>
+            </div>
+            
+            <div id="signupForm">
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" class="form-control" required>
+                        <div class="error-message" id="mobileError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                        <div class="password-strength">
+                            <div class="strength-meter" id="strengthMeter"></div>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                        <div class="error-message" id="confirmPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" class="form-control" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>User Type</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="userType" value="student" checked> Student
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="userType" value="librarian"> Librarian
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="submit" class="btn" style="width: 100%;">Create Account</button>
+                        <p>Already have an account? <a href="#" id="loginFromSignup">Log In</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="success-animation" id="signupSuccess">
+                <i class="fas fa-check-circle"></i>
+                <h3>Welcome to LibraNexus!</h3>
+                <p>Your account has been successfully created.</p>
+                <button class="btn" id="continueToHome" style="width: 100%;">Continue to Homepage</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>LibraNexus</h3>
+                <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1.5rem;">Modern library management system with AI-powered features for a seamless experience.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#collections">Collections</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#">Books</a></li>
+                    <li><a href="#">My Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> 123 Library St, Bookville</a></li>
+                    <li><a href="#"><i class="fas fa-phone" style="margin-right: 8px;"></i> (123) 456-7890</a></li>
+                    <li><a href="#"><i class="fas fa-envelope" style="margin-right: 8px;"></i> info@libranexus.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 LibraNexus. All rights reserved. | <a href="#" style="color: rgba(255, 255, 255, 0.7);">Privacy Policy</a> | <a href="#" style="color: rgba(255, 255, 255, 0.7);">Terms of Service</a></p>
+        </div>
+    </footer>
+    
+    <!-- AI Chatbot -->
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3><i class="fas fa-robot"></i> LibraAssistant</h3>
+                <i class="fas fa-times" id="closeChatbot"></i>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot-message">
+                    Hello! I'm Libra, your library assistant. How can I help you today?
+                    <div class="quick-actions">
+                        <button class="quick-action">Find a book</button>
+                        <button class="quick-action">Renew loan</button>
+                        <button class="quick-action">Library hours</button>
+                        <button class="quick-action">My account</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message...">
+                <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Signup modal functionality
+        const signupModal = document.getElementById('signupModal');
+        const signupBtn = document.getElementById('signupBtn');
+        const heroSignup = document.getElementById('heroSignup');
+        const closeSignupModal = document.getElementById('closeSignupModal');
+        const loginFromSignup = document.getElementById('loginFromSignup');
+        const signupForm = document.getElementById('signupForm');
+        const signupSuccess = document.getElementById('signupSuccess');
+        const continueToHome = document.getElementById('continueToHome');
+        
+        signupBtn.addEventListener('click', () => {
+            signupModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        heroSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeSignupModal.addEventListener('click', () => {
+            signupModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        loginFromSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Here you would typically switch to login form
+            alert('Login functionality would be implemented here');
+        });
+        
+        continueToHome.addEventListener('click', () => {
+            signupModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            // Redirect to homepage or refresh
+            window.location.href = '#';
+        });
+        
+        // Close modal when clicking outside
+        signupModal.addEventListener('click', (e) => {
+            if (e.target === signupModal) {
+                signupModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Form validation
+        const registrationForm = document.getElementById('registrationForm');
+        const passwordInput = document.getElementById('password');
+        const strengthMeter = document.getElementById('strengthMeter');
+        
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            let strength = 0;
+            
+            // Check password length
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Check for mixed case
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+            
+            // Check for numbers
+            if (password.match(/\d/)) strength += 1;
+            
+            // Check for special characters
+            if (password.match(/[^a-zA-Z0-9]/)) strength += 1;
+            
+            // Update strength meter
+            strengthMeter.style.width = `${strength * 20}%`;
+            
+            // Update color
+            if (strength <= 1) {
+                strengthMeter.style.backgroundColor = '#ff4d4d'; // Weak
+            } else if (strength <= 3) {
+                strengthMeter.style.backgroundColor = '#ffa64d'; // Medium
+            } else {
+                strengthMeter.style.backgroundColor = '#4CAF50'; // Strong
+            }
+        });
+        
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simple validation (in a real app, this would be more comprehensive)
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            let isValid = true;
+            
+            // Name validation
+            if (fullName.length < 3) {
+                document.getElementById('nameError').textContent = 'Name must be at least 3 characters';
+                isValid = false;
+            } else {
+                document.getElementById('nameError').textContent = '';
+            }
+            
+            // Email validation
+            if (!email.includes('@') || !email.includes('.')) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').textContent = '';
+            }
+            
+            // Mobile validation
+            if (mobile.length < 10 || isNaN(mobile)) {
+                document.getElementById('mobileError').textContent = 'Please enter a valid mobile number';
+                isValid = false;
+            } else {
+                document.getElementById('mobileError').textContent = '';
+            }
+            
+            // Password validation
+            if (password.length < 8) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            } else {
+                document.getElementById('passwordError').textContent = '';
+            }
+            
+            // Confirm password
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').textContent = '';
+            }
+            
+            if (isValid) {
+                // In a real app, you would send this data to your backend
+                console.log('Form submitted:', {
+                    fullName,
+                    email,
+                    mobile,
+                    password,
+                    gender: document.getElementById('gender').value,
+                    userType: document.querySelector('input[name="userType"]:checked').value
+                });
+                
+                // Show success message
+                signupForm.style.display = 'none';
+                signupSuccess.style.display = 'block';
+            }
+        });
+        
+        // Chatbot functionality
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const closeChatbot = document.getElementById('closeChatbot');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const sendMessage = document.getElementById('sendMessage');
+        
+        // Toggle chatbot window
+        chatbotToggle.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('active');
+        });
+        
+        closeChatbot.addEventListener('click', () => {
+            chatbotWindow.classList.remove('active');
+        });
+        
+        // Send message function
+        function sendUserMessage() {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                // Add user message to chat
+                addMessage(message, 'user');
+                chatbotInput.value = '';
+                
+                // Simulate bot response after a short delay
+                setTimeout(() => {
+                    const botResponse = getBotResponse(message);
+                    addMessage(botResponse, 'bot');
+                }, 800);
+            }
+        }
+        
+        // Handle send button click
+        sendMessage.addEventListener('click', sendUserMessage);
+        
+        // Handle Enter key
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendUserMessage();
+            }
+        });
+        
+        // Quick action buttons
+        document.querySelectorAll('.quick-action').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const action = e.target.textContent;
+                addMessage(action, 'user');
+                
+                setTimeout(() => {
+                    const botResponse = getBotResponse(action);
+                    addMessage(botResponse, 'bot');
+                }, 800);
+            });
+        });
+        
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+            
+            // Add quick actions for bot messages
+            if (sender === 'bot' && (text.includes('How can I help') || text.includes('What can I do'))) {
+                const quickActions = document.createElement('div');
+                quickActions.className = 'quick-actions';
+                quickActions.innerHTML = `
+                    <button class="quick-action">Find a book</button>
+                    <button class="quick-action">Renew loan</button>
+                    <button class="quick-action">Library hours</button>
+                    <button class="quick-action">My account</button>
+                `;
+                messageDiv.appendChild(quickActions);
+                
+                // Add event listeners to new quick action buttons
+                quickActions.querySelectorAll('.quick-action').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const action = e.target.textContent;
+                        addMessage(action, 'user');
+                        
+                        setTimeout(() => {
+                            const botResponse = getBotResponse(action);
+                            addMessage(botResponse, 'bot');
+                        }, 800);
+                    });
+                });
+            }
+            
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Simple bot response logic (in a real app, this would connect to an AI service)
+        function getBotResponse(message) {
+            message = message.toLowerCase();
+            
+            if (message.includes('hi') || message.includes('hello')) {
+                return "Hello again! What can I help you with today?";
+            } else if (message.includes('book') || message.includes('find')) {
+                return "I can help you find books. Please tell me the title, author, or subject you're interested in.";
+            } else if (message.includes('renew') || message.includes('loan')) {
+                return "To renew your loans, I'll need your library card number. Or you can say 'My account' to access your account directly.";
+            } else if (message.includes('hour') || message.includes('time')) {
+                return "The library is open:\nMon-Fri: 9am-9pm\nSat: 10am-6pm\nSun: 12pm-5pm";
+            } else if (message.includes('account') || message.includes('my')) {
+                return "You'll need to log in to access your account details. Would you like me to direct you to the login page?";
+            } else if (message.includes('thank')) {
+                return "You're welcome! Is there anything else I can help you with?";
+            } else if (message.includes('bye') || message.includes('goodbye')) {
+                return "Goodbye! Don't hesitate to ask if you need any help in the future.";
+            } else {
+                return "I'm still learning! I can help you find books, renew loans, check library hours, or access your account. What would you like to do?";
+            }
+        }
+        
+        // Animate features on scroll
+        const featureCards = document.querySelectorAll('.feature-card');
+        
+        const animateOnScroll = () => {
+            featureCards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (cardPosition < screenPosition) {
+                    card.classList.add('animate');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+        
+        // Initialize animations
+        animateOnScroll();
+    </script>
+</body>
+</html>
