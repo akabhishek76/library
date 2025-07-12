@@ -42,6 +42,69 @@
             line-height: 1.6;
         }
         
+        /* Page Transition Animation */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            transform: translateX(-100%);
+        }
+        
+        .page-transition.active {
+            animation: pageSlide 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        
+        .book-animation {
+            width: 100px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 5px 15px 15px 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform-origin: left center;
+            transition: transform 1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .page-transition.active .book-cover {
+            transform: rotateY(-160deg);
+        }
+        
+        @keyframes pageSlide {
+            0% {
+                transform: translateX(-100%);
+            }
+            40% {
+                transform: translateX(0);
+            }
+            60% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
         /* Layout Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -145,7 +208,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             font-weight: 700;
             color: var(--primary);
             text-decoration: none;
@@ -153,7 +216,7 @@
         }
         
         .logo i {
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
             animation: pulse 2.5s infinite;
         }
         
@@ -166,7 +229,7 @@
         nav ul {
             display: flex;
             list-style: none;
-            gap: 2.5rem;
+            gap: clamp(1rem, 3vw, 2.5rem);
         }
         
         nav a {
@@ -175,7 +238,7 @@
             font-weight: 500;
             position: relative;
             transition: all 0.3s;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
         
         nav a:hover {
@@ -204,7 +267,7 @@
         
         /* Hero Section */
         .hero {
-            padding: 6rem 2rem 8rem;
+            padding: clamp(4rem, 8vw, 6rem) 2rem clamp(6rem, 10vw, 8rem);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -215,12 +278,12 @@
         }
         
         .hero-content {
-            max-width: 650px;
+            max-width: min(650px, 100%);
             animation: slideUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
         
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             margin-bottom: 1.5rem;
             background: linear-gradient(45deg, var(--primary), var(--warning));
             -webkit-background-clip: text;
@@ -232,7 +295,7 @@
         }
         
         .hero p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             line-height: 1.8;
             margin-bottom: 2.5rem;
             color: var(--text-light);
@@ -243,7 +306,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 1rem 2rem;
+            padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
             background: var(--primary);
             color: white;
             border-radius: 50px;
@@ -253,7 +316,7 @@
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 2vw, 1.1rem);
             position: relative;
             overflow: hidden;
         }
@@ -293,7 +356,7 @@
         }
         
         .hero-image {
-            width: 600px;
+            width: min(600px, 100%);
             animation: float 8s infinite ease-in-out;
             transition: all 0.4s;
         }
@@ -304,19 +367,19 @@
         
         /* Collections Section */
         .collections {
-            padding: 6rem 2rem;
+            padding: clamp(4rem, 8vw, 6rem) 2rem;
             background: white;
             position: relative;
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: clamp(2rem, 5vw, 4rem);
             animation: fadeIn 1s both;
         }
         
         .section-title {
-            font-size: 2.8rem;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             margin-bottom: 1rem;
             color: var(--dark);
             font-family: 'Playfair Display', serif;
@@ -324,7 +387,7 @@
         }
         
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             color: var(--text-light);
             max-width: 700px;
             margin: 0 auto;
@@ -332,8 +395,8 @@
         
         .collections-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: clamp(1.5rem, 3vw, 2.5rem);
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -374,11 +437,11 @@
         }
         
         .collection-info {
-            padding: 1.5rem;
+            padding: clamp(1rem, 2vw, 1.5rem);
         }
         
         .collection-title {
-            font-size: 1.4rem;
+            font-size: clamp(1.2rem, 2vw, 1.4rem);
             margin-bottom: 0.5rem;
             color: var(--dark);
             font-weight: 600;
@@ -387,25 +450,25 @@
         .collection-count {
             color: var(--text-light);
             margin-bottom: 1rem;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
         }
         
         .collection-description {
             color: var(--text);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
         }
         
         /* Features Section */
         .features {
-            padding: 6rem 2rem;
+            padding: clamp(4rem, 8vw, 6rem) 2rem;
             background: var(--bg);
         }
         
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: clamp(2rem, 4vw, 3rem);
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -413,7 +476,7 @@
         .feature-card {
             background: white;
             border-radius: 16px;
-            padding: 2.5rem 2rem;
+            padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2rem);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             transition: all 0.4s;
             border: 1px solid rgba(0, 0, 0, 0.05);
@@ -438,17 +501,17 @@
         }
         
         .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
             color: var(--primary);
             background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(67, 97, 238, 0.2));
-            width: 80px;
-            height: 80px;
+            width: clamp(70px, 10vw, 80px);
+            height: clamp(70px, 10vw, 80px);
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto clamp(1rem, 2vw, 1.5rem);
             transition: all 0.4s;
         }
         
@@ -458,8 +521,8 @@
         }
         
         .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            margin-bottom: clamp(0.8rem, 1.5vw, 1rem);
             text-align: center;
             color: var(--dark);
         }
@@ -468,9 +531,10 @@
             color: var(--text-light);
             line-height: 1.7;
             text-align: center;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
         }
         
-        /* Signup Modal */
+        /* Modal Styles */
         .modal {
             position: fixed;
             top: 0;
@@ -494,18 +558,30 @@
         }
         
         .modal-content {
-            background: white;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            padding: 3rem;
+            background: lightcyan;
+            border-radius: 30px;
+            width: 100%;
+            max-height: 800px;
+            max-width: 600px;
+            padding: clamp(2rem, 4vw, 3rem);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
             transform: translateY(30px);
-            transition: all 0.4s;
+            transition: all 1s;
             position: relative;
             overflow: hidden;
+            overflow-y: auto;
+            padding-right: 1rem;
         }
-        
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #e0ffff;
+        }
         .modal.active .modal-content {
             transform: translateY(0);
         }
@@ -514,7 +590,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             color: var(--text-light);
             cursor: pointer;
             transition: all 0.3s;
@@ -529,11 +605,11 @@
         
         .modal-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: clamp(1.5rem, 3vw, 2rem);
         }
         
         .modal-header h2 {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 3vw, 2rem);
             color: var(--dark);
             margin-bottom: 0.5rem;
             font-family: 'Playfair Display', serif;
@@ -541,10 +617,11 @@
         
         .modal-header p {
             color: var(--text-light);
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
             position: relative;
         }
         
@@ -553,14 +630,15 @@
             margin-bottom: 0.5rem;
             color: var(--text);
             font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         .form-control {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: all 0.3s;
             background: #f9f9f9;
         }
@@ -588,13 +666,14 @@
         }
         
         .form-footer {
-            margin-top: 2rem;
+            margin-top: clamp(1.5rem, 3vw, 2rem);
             text-align: center;
         }
         
         .form-footer p {
             color: var(--text-light);
             margin-top: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         .form-footer a {
@@ -603,49 +682,68 @@
             font-weight: 500;
         }
         
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+        
+        .radio-label input {
+            accent-color: var(--primary);
+        }
+        
         /* Success Animation */
         .success-animation {
             display: none;
             text-align: center;
-            padding: 2rem;
+            padding: clamp(1.5rem, 3vw, 2rem);
         }
         
         .success-animation i {
-            font-size: 5rem;
+            font-size: clamp(3rem, 8vw, 5rem);
             color: var(--success);
-            margin-bottom: 1.5rem;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
             animation: bounceIn 1s both;
         }
         
         .success-animation h3 {
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
             margin-bottom: 1rem;
             color: var(--dark);
         }
         
         .success-animation p {
             color: var(--text-light);
-            margin-bottom: 2rem;
+            margin-bottom: clamp(1.5rem, 3vw, 2rem);
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         /* Chatbot */
         .chatbot-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: clamp(20px, 3vw, 30px);
+            right: clamp(20px, 3vw, 30px);
             z-index: 1000;
         }
         
         .chatbot-toggle {
-            width: 70px;
-            height: 70px;
+            width: clamp(60px, 8vw, 70px);
+            height: clamp(60px, 8vw, 70px);
             background: var(--primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -676,13 +774,13 @@
         }
         
         .chatbot-window {
-            width: 380px;
-            height: 550px;
+            width: clamp(300px, 90vw, 380px);
+            height: clamp(450px, 90vh, 550px);
             background: white;
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             position: absolute;
-            bottom: 90px;
+            bottom: clamp(70px, 10vw, 90px);
             right: 0;
             overflow: hidden;
             display: none;
@@ -701,7 +799,7 @@
         .chatbot-header {
             background: var(--primary);
             color: white;
-            padding: 1.2rem;
+            padding: clamp(1rem, 2vw, 1.2rem);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -711,12 +809,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
         }
         
         .chatbot-header i {
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             transition: all 0.3s;
         }
         
@@ -726,21 +824,21 @@
         
         .chatbot-messages {
             flex: 1;
-            padding: 1.5rem;
+            padding: clamp(1rem, 2vw, 1.5rem);
             overflow-y: auto;
             background: #f9f9f9;
             scroll-behavior: smooth;
         }
         
         .message {
-            margin-bottom: 1.2rem;
+            margin-bottom: clamp(1rem, 2vw, 1.2rem);
             max-width: 85%;
-            padding: 0.8rem 1.2rem;
+            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);
             border-radius: 18px;
             animation: fadeIn 0.4s ease-out;
             position: relative;
             line-height: 1.5;
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
         }
         
         .bot-message {
@@ -760,18 +858,18 @@
         
         .chatbot-input {
             display: flex;
-            padding: 1.2rem;
+            padding: clamp(1rem, 2vw, 1.2rem);
             border-top: 1px solid #eee;
             background: white;
         }
         
         .chatbot-input input {
             flex: 1;
-            padding: 0.8rem 1.2rem;
+            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);
             border: 1px solid #ddd;
             border-radius: 50px;
             outline: none;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: all 0.3s;
         }
         
@@ -781,18 +879,19 @@
         }
         
         .chatbot-input button {
-            width: 50px;
-            height: 50px;
+            width: clamp(45px, 7vw, 50px);
+            height: clamp(45px, 7vw, 50px);
             border-radius: 50%;
             background: var(--primary);
             color: white;
             border: none;
-            margin-left: 0.8rem;
+            margin-left: clamp(0.5rem, 1.5vw, 0.8rem);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: clamp(1rem, 2vw, 1.2rem);
         }
         
         .chatbot-input button:hover {
@@ -803,17 +902,17 @@
         .quick-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-top: 0.8rem;
+            gap: clamp(0.5rem, 1.5vw, 0.6rem);
+            margin-top: clamp(0.5rem, 1.5vw, 0.8rem);
         }
         
         .quick-action {
             background: rgba(67, 97, 238, 0.1);
             color: var(--primary);
             border: none;
-            padding: 0.6rem 1rem;
+            padding: clamp(0.5rem, 1.5vw, 0.6rem) clamp(0.8rem, 2vw, 1rem);
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -827,20 +926,20 @@
         footer {
             background: var(--dark);
             color: white;
-            padding: 5rem 2rem 2rem;
+            padding: clamp(3rem, 6vw, 5rem) 2rem 2rem;
         }
         
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+            gap: clamp(2rem, 4vw, 3rem);
             max-width: 1200px;
-            margin: 0 auto 3rem;
+            margin: 0 auto clamp(2rem, 4vw, 3rem);
         }
         
         .footer-col h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
             font-family: 'Playfair Display', serif;
             font-weight: 500;
         }
@@ -850,13 +949,14 @@
         }
         
         .footer-col li {
-            margin-bottom: 0.8rem;
+            margin-bottom: clamp(0.6rem, 1.5vw, 0.8rem);
         }
         
         .footer-col a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: all 0.3s;
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
         }
         
         .footer-col a:hover {
@@ -864,30 +964,38 @@
             padding-left: 5px;
         }
         
+        .footer-col p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            line-height: 1.6;
+        }
+        
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
         }
         
         .social-links {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: clamp(0.8rem, 2vw, 1rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
         }
         
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: clamp(35px, 6vw, 40px);
+            height: clamp(35px, 6vw, 40px);
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             transition: all 0.3s;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         .social-links a:hover {
@@ -896,16 +1004,21 @@
         }
         
         /* Responsive Design */
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
             .hero {
                 flex-direction: column;
                 text-align: center;
-                padding: 4rem 1rem 6rem;
-            }
-            
-            .hero-content {
-                margin-bottom: 3rem;
-                max-width: 100%;
             }
             
             .hero p {
@@ -915,75 +1028,37 @@
             }
             
             .hero-image {
-                width: 100%;
-                max-width: 500px;
-            }
-            
-            .section-title {
-                font-size: 2.4rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav ul {
-                gap: 1.5rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .section-title {
-                font-size: 2.2rem;
+                margin-top: 2rem;
             }
             
             .modal-content {
-                padding: 2rem 1.5rem;
-            }
-            
-            .chatbot-window {
-                width: 90vw;
-                right: 5vw;
+                padding: 1.5rem;
             }
         }
         
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 2.2rem;
+        @media (max-width: 480px) {
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
-            }
-            
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .collection-card {
-                min-width: 100%;
-            }
-            
-            .chatbot-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Page Transition Animation -->
+    <div class="page-transition" id="pageTransition">
+        <div class="book-animation">
+            <div class="book-cover">
+                <i class="fas fa-book"></i>
+            </div>
+        </div>
+    </div>
+    
     <!-- Background Elements -->
     <div class="bg-pattern"></div>
     <div class="bg-circle circle-1"></div>
@@ -997,12 +1072,12 @@
         </a>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#collections">Collections</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#">Books</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#collections" class="nav-link">Collections</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="books.html" class="nav-link" id="booksLink">Books</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
             </ul>
         </nav>
         <div class="auth-buttons">
@@ -1037,7 +1112,7 @@
                     <h3 class="collection-title">Modern Fiction</h3>
                     <p class="collection-count">350+ Titles</p>
                     <p class="collection-description">Explore contemporary novels from award-winning authors around the world.</p>
-                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                    <a href="books.html" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -1046,7 +1121,7 @@
                     <h3 class="collection-title">Science & Technology</h3>
                     <p class="collection-count">420+ Titles</p>
                     <p class="collection-description">Cutting-edge research and discoveries in science and technology fields.</p>
-                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                    <a href="books.html" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -1055,7 +1130,7 @@
                     <h3 class="collection-title">World History</h3>
                     <p class="collection-count">280+ Titles</p>
                     <p class="collection-description">Journey through time with comprehensive historical accounts.</p>
-                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                    <a href="books.html" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -1064,7 +1139,7 @@
                     <h3 class="collection-title">Business & Finance</h3>
                     <p class="collection-count">320+ Titles</p>
                     <p class="collection-description">Master the world of business with insights from industry leaders.</p>
-                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                    <a href="books.html" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -1073,7 +1148,7 @@
                     <h3 class="collection-title">Creative Writing</h3>
                     <p class="collection-count">190+ Titles</p>
                     <p class="collection-description">Unleash your creativity with guides from accomplished writers.</p>
-                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                    <a href="books.html" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -1082,7 +1157,7 @@
                     <h3 class="collection-title">Classic Literature</h3>
                     <p class="collection-count">500+ Titles</p>
                     <p class="collection-description">Timeless masterpieces that have shaped literary history.</p>
-                    <a href="#" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
+                    <a href="books.html" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Browse Collection</a>
                 </div>
             </div>
         </div>
@@ -1149,7 +1224,7 @@
                 <p>Join our library community in just a few steps</p>
             </div>
             
-            <div id="signupForm">
+            <div id="signupForm" >
                 <form id="registrationForm">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
@@ -1223,12 +1298,58 @@
         </div>
     </div>
     
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeLoginModal">&times;</button>
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <p>Log in to access your library account</p>
+            </div>
+            
+            <div id="loginForm">
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" class="form-control" required>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control" required>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                        <label class="radio-label">
+                            <input type="checkbox" name="rememberMe"> Remember me
+                        </label>
+                        <a href="#" style="font-size: 0.9rem; color: var(--primary);">Forgot password?</a>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="submit" class="btn" style="width: 100%;">Log In</button>
+                        <p>Don't have an account? <a href="#" id="signupFromLogin">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="success-animation" id="loginSuccess" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <h3>Login Successful!</h3>
+                <p>Welcome back to LibraNexus.</p>
+                <button class="btn" id="continueAfterLogin" style="width: 100%;">Continue to Dashboard</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Footer -->
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
                 <h3>LibraNexus</h3>
-                <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1.5rem;">Modern library management system with AI-powered features for a seamless experience.</p>
+                <p>Modern library management system with AI-powered features for a seamless experience.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -1242,7 +1363,7 @@
                     <li><a href="#">Home</a></li>
                     <li><a href="#collections">Collections</a></li>
                     <li><a href="#features">Features</a></li>
-                    <li><a href="#">Books</a></li>
+                    <li><a href="books.html">Books</a></li>
                     <li><a href="#">My Account</a></li>
                 </ul>
             </div>
@@ -1266,7 +1387,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 LibraNexus. All rights reserved. | <a href="#" style="color: rgba(255, 255, 255, 0.7);">Privacy Policy</a> | <a href="#" style="color: rgba(255, 255, 255, 0.7);">Terms of Service</a></p>
+            <p>&copy; 2023 LibraNexus. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
         </div>
     </footer>
     
@@ -1299,6 +1420,23 @@
     </div>
     
     <script>
+        // Page Transition Animation
+        const pageTransition = document.getElementById('pageTransition');
+        const booksLink = document.getElementById('booksLink');
+        
+        booksLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetUrl = this.getAttribute('href');
+            
+            // Activate the page transition
+            pageTransition.classList.add('active');
+            
+            // Navigate to the new page after animation completes
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 1000);
+        });
+        
         // Header scroll effect
         const header = document.getElementById('mainHeader');
         window.addEventListener('scroll', () => {
@@ -1309,16 +1447,23 @@
             }
         });
         
-        // Signup modal functionality
+        // Modal functionality
         const signupModal = document.getElementById('signupModal');
+        const loginModal = document.getElementById('loginModal');
         const signupBtn = document.getElementById('signupBtn');
+        const loginBtn = document.getElementById('loginBtn');
         const heroSignup = document.getElementById('heroSignup');
         const closeSignupModal = document.getElementById('closeSignupModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
         const loginFromSignup = document.getElementById('loginFromSignup');
+        const signupFromLogin = document.getElementById('signupFromLogin');
         const signupForm = document.getElementById('signupForm');
         const signupSuccess = document.getElementById('signupSuccess');
         const continueToHome = document.getElementById('continueToHome');
+        const loginSuccess = document.getElementById('loginSuccess');
+        const continueAfterLogin = document.getElementById('continueAfterLogin');
         
+        // Open signup modal
         signupBtn.addEventListener('click', () => {
             signupModal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1330,33 +1475,47 @@
             document.body.style.overflow = 'hidden';
         });
         
+        // Open login modal
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Close modals
         closeSignupModal.addEventListener('click', () => {
             signupModal.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
         
-        loginFromSignup.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Here you would typically switch to login form
-            alert('Login functionality would be implemented here');
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
         });
         
-        continueToHome.addEventListener('click', () => {
+        // Switch between login and signup
+        loginFromSignup.addEventListener('click', (e) => {
+            e.preventDefault();
             signupModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            // Redirect to homepage or refresh
-            window.location.href = '#';
+            loginModal.classList.add('active');
+        });
+        
+        signupFromLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.remove('active');
+            signupModal.classList.add('active');
         });
         
         // Close modal when clicking outside
-        signupModal.addEventListener('click', (e) => {
-            if (e.target === signupModal) {
-                signupModal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
+        [signupModal, loginModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
         
-        // Form validation
+        // Form validation for signup
         const registrationForm = document.getElementById('registrationForm');
         const passwordInput = document.getElementById('password');
         const strengthMeter = document.getElementById('strengthMeter');
@@ -1458,6 +1617,57 @@
                 signupForm.style.display = 'none';
                 signupSuccess.style.display = 'block';
             }
+        });
+        
+        continueToHome.addEventListener('click', () => {
+            signupModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            // Redirect to homepage or refresh
+            window.location.href = '#';
+        });
+        
+        // Login form handling
+        const loginForm = document.getElementById('loginFormElement');
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            let isValid = true;
+            
+            // Email validation
+            if (!email.includes('@') || !email.includes('.')) {
+                document.getElementById('loginEmailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            } else {
+                document.getElementById('loginEmailError').textContent = '';
+            }
+            
+            // Password validation
+            if (password.length < 1) {
+                document.getElementById('loginPasswordError').textContent = 'Please enter your password';
+                isValid = false;
+            } else {
+                document.getElementById('loginPasswordError').textContent = '';
+            }
+            
+            if (isValid) {
+                // In a real app, you would send this data to your backend
+                console.log('Login submitted:', { email, password });
+                
+                // Show success message
+                document.getElementById('loginForm').style.display = 'none';
+                loginSuccess.style.display = 'block';
+            }
+        });
+        
+        continueAfterLogin.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            // Redirect to dashboard
+            window.location.href = '#';
         });
         
         // Chatbot functionality
@@ -1595,6 +1805,24 @@
         
         // Initialize animations
         animateOnScroll();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>

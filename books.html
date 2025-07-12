@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibraNexus | Book Collection</title>
+    <meta name="description" content="Browse our extensive collection of books across various genres">
+    <meta name="keywords" content="books, library, reading, literature, collection">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --text: #333333;
+            --text-light: #666666;
+            --bg: #f9fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Page Transition Animation */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            transform: translateX(100%);
+        }
+        
+        .page-transition.active {
+            animation: pageSlideOut 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        
+        .book-animation {
+            width: 100px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 5px 15px 15px 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform-origin: right center;
+            transition: transform 1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .page-transition.active .book-cover {
+            transform: rotateY(160deg);
+        }
+        
+        @keyframes pageSlideOut {
+            0% {
+                transform: translateX(100%);
+            }
+            40% {
+                transform: translateX(0);
+            }
+            60% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .logo i {
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            animation: pulse 2.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2.5rem);
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Main Content */
+        .books-container {
+            padding: clamp(4rem, 8vw, 6rem) 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: clamp(2rem, 5vw, 4rem);
+        }
+        
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--primary), var(--warning));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Book Filter */
+        .book-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        /* Book Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .book-card {
+            background: white;
+            height: 400PX;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .book-card:nth-child(1) { animation-delay: 0.1s; }
+        .book-card:nth-child(2) { animation-delay: 0.2s; }
+        .book-card:nth-child(3) { animation-delay: 0.3s; }
+        .book-card:nth-child(4) { animation-delay: 0.4s; }
+        .book-card:nth-child(5) { animation-delay: 0.5s; }
+        .book-card:nth-child(6) { animation-delay: 0.6s; }
+        .book-card:nth-child(7) { animation-delay: 0.7s; }
+        .book-card:nth-child(8) { animation-delay: 0.8s; }
+        
+        .book-card:hover {
+            transform: translateY(-10px) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 1;
+        }
+        
+        .book-cover {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .book-card:hover .book-cover {
+            transform: scale(1.05);
+        }
+        
+        .book-info {
+            padding: 3rem;
+            height: 100px;
+            width: 100%;
+            margin-top: 13rem;
+            display: flex;  
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            position: relative;
+            transition: all 0.3s ease;
+
+        }
+        
+        .book-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 600;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .book-author {
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+        
+        .book-description {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .book-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.7rem 1.2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .favorite-btn.active {
+            color: var(--warning);
+            animation: heartBeat 0.6s;
+        }
+        
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Book List Section */
+        .book-list-section {
+            background: white;
+            padding: clamp(4rem, 8vw, 6rem) 2rem;
+            margin-top: 3rem;
+        }
+        
+        .book-list-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .book-list-item {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .book-list-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-list-cover {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-list-info {
+            flex: 1;
+        }
+        
+        .book-list-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .book-list-author {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .book-list-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+        /* .books-grid {
+            display: grid;
+            height: 650px;
+            width: 100%;
+            overflow-y: auto;
+            grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+
+        } */
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: clamp(3rem, 6vw, 5rem) 2rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 200%), 4fr));
+            gap: clamp(2rem, 4vw, 3rem);
+            max-width: 1200px;
+            margin: 0 auto clamp(2rem, 4vw, 3rem);
+        }
+        
+        .footer-col h3 {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col li {
+            margin-bottom: clamp(0.6rem, 1.5vw, 0.8rem);
+        }
+        
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
+        }
+        
+        .footer-col a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-col p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            line-height: 1.6;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: clamp(0.8rem, 2vw, 1rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(35px, 6vw, 40px);
+            height: clamp(35px, 6vw, 40px);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .book-filter {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .book-list-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .book-list-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Transition Animation -->
+    <div class="page-transition" id="pageTransition">
+        <div class="book-animation">
+            <div class="book-cover">
+                <i class="fas fa-book"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header id="mainHeader">
+        <a href="index.html" class="logo" id="homeLink">
+            <i class="fas fa-book-open"></i>
+            <span>LibraNexus</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#collections" class="nav-link">Collections</a></li>
+                <li><a href="index.html#features" class="nav-link">Features</a></li>
+                <li><a href="books.html" class="nav-link active">Books</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+        <!-- <div class="auth-buttons">
+            <button class="btn btn-outline" id="loginBtn">Login</button>
+            <button class="btn" id="signupBtn">Sign Up</button>
+        </div> -->
+    </header>
+    
+    <!-- Main Content -->
+    <div class="books-container">
+        <div class="section-header">
+            <h1 class="section-title">Our Book Collection</h1>
+            <p class="section-subtitle">"Explore our vast collection of captivating books across every genre and subject — your next great read is just a page away!"</p>
+        </div>
+        
+        <!-- Book Filter -->
+        <div class="book-filter">
+            <div class="filter-group">
+                <label for="genre">Genre</label>
+                <select id="genre">
+                    <option value="">All Genres</option>
+                    <option value="fiction">Fiction</option>
+                    <option value="non-fiction">Non-Fiction</option>
+                    <option value="science">Science</option>
+                    <option value="history">History</option>
+                    <option value="biography">Biography</option>
+                    <option value="fantasy">Fantasy</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="author">Author</label>
+                <select id="author">
+                    <option value="">All Authors</option>
+                    <option value="rowling">J.K. Rowling</option>
+                    <option value="tolkien">J.R.R. Tolkien</option>
+                    <option value="martin">George R.R. Martin</option>
+                    <option value="king">Stephen King</option>
+                    <option value="brown">Dan Brown</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="availability">Availability</label>
+                <select id="availability">
+                    <option value="">All</option>
+                    <option value="available">Available Now</option>
+                    <option value="checked-out">Checked Out</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="search">Search</label>
+                <input type="text" id="search" placeholder="Title, author, keyword...">
+            </div>
+        </div>
+        
+        <!-- Book Grid -->
+        <div class="books-grid" id="booksGrid">
+            <!-- Book cards will be dynamically inserted here -->
+        </div>
+    </div>
+    
+    <!-- Book List Section -->
+    <div class="book-list-section">
+        <div class="book-list-container">
+            <div class="section-header">
+                <h2 class="section-title">Your Reading List</h2>
+                <p class="section-subtitle">Save your favorite books to access them later</p>
+            </div>
+            
+            <div class="book-list" id="bookList">
+                <!-- Book list items will be dynamically inserted here -->
+                <div class="empty-list-message" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                    <i class="fas fa-book-open" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3 style="margin-bottom: 0.5rem;">Your reading list is empty</h3>
+                    <p style="color: var(--text-light);">Add books to your list by clicking the heart icon</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>LibraNexus</h3>
+                <p>Modern library management system with AI-powered features for a seamless experience.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#collections">Collections</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="books.html">Books</a></li>
+                    <li><a href="#">My Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> 123 Library St, Bookville</a></li>
+                    <li><a href="#"><i class="fas fa-phone" style="margin-right: 8px;"></i> (123) 456-7890</a></li>
+                    <li><a href="#"><i class="fas fa-envelope" style="margin-right: 8px;"></i> info@libranexus.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 LibraNexus. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        // Sample book data
+        const books = [
+            {
+                id: 1,
+                title: "The Silent Patient",
+                author: "Alex Michaelides",
+                genre: "Psychological Thriller",
+                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A psychological thriller about a woman who shoots her husband and then stops speaking.",
+                available: true
+            },
+            {
+                id: 2,
+                title: "Educated",
+                author: "Tara Westover",
+                genre: "Memoir",
+                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A memoir about a woman who leaves her survivalist family and goes on to earn a PhD from Cambridge University.",
+                available: true
+            },
+            {
+                id: 3,
+                title: "Sapiens",
+                author: "Yuval Noah Harari",
+                genre: "History",
+                cover: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A brief history of humankind, exploring the ways in which biology and history have defined us.",
+                available: false
+            },
+            {
+                id: 4,
+                title: "The Midnight Library",
+                author: "Matt Haig",
+                genre: "Fantasy",
+                cover: "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A novel about a library between life and death where each book provides a chance to try another life.",
+                available: true
+            },
+            {
+                id: 5,
+                title: "Atomic Habits",
+                author: "James Clear",
+                genre: "Self-Help",
+                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A guide to building good habits and breaking bad ones with tiny changes that deliver remarkable results.",
+                available: true
+            },
+            {
+                id: 6,
+                title: "Where the Crawdads Sing",
+                author: "Delia Owens",
+                genre: "Mystery",
+                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A murder mystery and coming-of-age story set in the marshes of North Carolina.",
+                available: false
+            },
+            {
+                id: 7,
+                title: "The Vanishing Half",
+                author: "Brit Bennett",
+                genre: "Fiction",
+                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A story about twin sisters who choose to live in two very different worlds—one black and one white.",
+                available: true
+            },
+            {
+                id: 8,
+                title: "Project Hail Mary",
+                author: "Andy Weir",
+                genre: "Science Fiction",
+                cover: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A lone astronaut must save the earth from disaster in this science fiction adventure.",
+                available: true
+            },
+            {
+                id: 9,
+                title: "Project Aka",
+                author: "Abhishek Kumar",
+                genre: "Science Fiction",
+                cover: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "A lone astronaut must save the earth from disaster in this science fiction adventure.",
+                available: true
+            }
+        ];
+        
+        // User's book list
+        let userBookList = [];
+        
+        // DOM elements
+        const booksGrid = document.getElementById('booksGrid');
+        const bookList = document.getElementById('bookList');
+        const homeLink = document.getElementById('homeLink');
+        const pageTransition = document.getElementById('pageTransition');
+        
+        // Initialize the page
+        function init() {
+            renderBooks();
+            
+            // Load saved book list from localStorage
+            const savedList = localStorage.getItem('userBookList');
+            if (savedList) {
+                userBookList = JSON.parse(savedList);
+                renderBookList();
+            }
+        }
+        
+        // Render books to the grid
+        function renderBooks(filteredBooks = books) {
+            booksGrid.innerHTML = '';
+            
+            filteredBooks.forEach(book => {
+                const isInList = userBookList.some(b => b.id === book.id);
+                
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}" class="book-cover">
+                    <div class="book-info">
+                        <h3 class="book-title">${book.title}</h3>
+                        <p class="book-author">By ${book.author}</p>
+                        <p class="book-description">${book.description}</p>
+                        <div class="book-actions">
+                            <button class="btn">${book.available ? 'Borrow' : 'Borrow'}</button>
+                            <button class="btn">${book.available ? 'Waitlist' : 'Waitlist'}</button>
+                            <button class="favorite-btn ${isInList ? 'active' : ''}" data-id="${book.id}">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                booksGrid.appendChild(bookCard);
+            });
+            
+            // Add event listeners to favorite buttons
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const bookId = parseInt(this.getAttribute('data-id'));
+                    toggleBookInList(bookId);
+                    
+                    // Toggle active class
+                    this.classList.toggle('active');
+                    
+                    // Add animation if adding to list
+                    if (this.classList.contains('active')) {
+                        this.querySelector('i').classList.add('animate__animated', 'animate__heartBeat');
+                        setTimeout(() => {
+                            this.querySelector('i').classList.remove('animate__animated', 'animate__heartBeat');
+                        }, 1000);
+                    }
+                });
+            });
+        }
+        
+        // Render user's book list
+        function renderBookList() {
+            if (userBookList.length === 0) {
+                bookList.innerHTML = `
+                    <div class="empty-list-message" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <i class="fas fa-book-open" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="margin-bottom: 0.5rem;">Your reading list is empty</h3>
+                        <p style="color: var(--text-light);">Add books to your list by clicking the heart icon</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            bookList.innerHTML = '';
+            
+            userBookList.forEach(book => {
+                const listItem = document.createElement('div');
+                listItem.className = 'book-list-item';
+                listItem.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}" class="book-list-cover">
+                    <div class="book-list-info">
+                        <h4 class="book-list-title">${book.title}</h4>
+                        <p class="book-list-author">By ${book.author}</p>
+                        <div class="book-list-actions">
+                            <button class="btn btn-outline" style="padding: 0.5rem 1rem;">Read Now</button>
+                            <button class="favorite-btn active" data-id="${book.id}">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                bookList.appendChild(listItem);
+            });
+            
+            // Add event listeners to list favorite buttons
+            document.querySelectorAll('.book-list-item .favorite-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const bookId = parseInt(this.getAttribute('data-id'));
+                    toggleBookInList(bookId);
+                });
+            });
+        }
+        
+        // Toggle book in user's list
+        function toggleBookInList(bookId) {
+            const bookIndex = userBookList.findIndex(b => b.id === bookId);
+            
+            if (bookIndex === -1) {
+                // Add to list
+                const bookToAdd = books.find(b => b.id === bookId);
+                if (bookToAdd) {
+                    userBookList.push(bookToAdd);
+                }
+            } else {
+                // Remove from list
+                userBookList.splice(bookIndex, 1);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('userBookList', JSON.stringify(userBookList));
+            
+            // Update the list display
+            renderBookList();
+        }
+        
+        // Filter books
+        function filterBooks() {
+            const genreFilter = document.getElementById('genre').value;
+            const authorFilter = document.getElementById('author').value;
+            const availabilityFilter = document.getElementById('availability').value;
+            const searchFilter = document.getElementById('search').value.toLowerCase();
+            
+            const filtered = books.filter(book => {
+                return (genreFilter === '' || book.genre.toLowerCase().includes(genreFilter)) &&
+                       (authorFilter === '' || book.author.toLowerCase().includes(authorFilter)) &&
+                       (availabilityFilter === '' || 
+                        (availabilityFilter === 'available' && book.available) ||
+                        (availabilityFilter === 'checked-out' && !book.available)) &&
+                       (searchFilter === '' || 
+                        book.title.toLowerCase().includes(searchFilter) || 
+                        book.author.toLowerCase().includes(searchFilter) ||
+                        book.description.toLowerCase().includes(searchFilter));
+            });
+            
+            renderBooks(filtered);
+        }
+        
+        // Add event listeners to filter controls
+        document.querySelectorAll('.filter-group select, .filter-group input').forEach(control => {
+            control.addEventListener('change', filterBooks);
+            control.addEventListener('input', filterBooks);
+        });
+        
+        // Page transition for home link
+        homeLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetUrl = this.getAttribute('href');
+            
+            // Activate the page transition
+            pageTransition.classList.add('active');
+            
+            // Navigate to the new page after animation completes
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 1000);
+        });
+        
+        // Initialize the page
+        init();
+    </script>
+</body>
+</html>
